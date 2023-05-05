@@ -1,15 +1,16 @@
 package com.example.covid19project
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.covid19project.databinding.ActivityMainBinding
+import android.os.PersistableBundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.covid19project.databinding.ActivityStateDetailsBinding
 
-class MainActivity : AppCompatActivity() {
+class StateDetailsActivity: AppCompatActivity() {
 
     private val viewBinding by lazy {
-        ActivityMainBinding.inflate(layoutInflater)
+        ActivityStateDetailsBinding.inflate(layoutInflater)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
