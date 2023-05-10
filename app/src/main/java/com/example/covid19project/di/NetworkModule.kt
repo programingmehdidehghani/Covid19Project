@@ -2,14 +2,17 @@ package com.example.covid19project.di
 
 import android.content.Context
 import com.example.covid19project.api.Covid19IndiaApiService
+import com.example.covid19project.util.isNetworkAvailable
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.Cache
 import okhttp3.OkHttpClient
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.create
 
 @ExperimentalCoroutinesApi
 val networkModule = module {
@@ -21,7 +24,9 @@ val networkModule = module {
                     Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
                 )
             )
-            .client()
+            .client(getOkHttpClient(androidContext()))
+            .build()
+            .create(Covid19IndiaApiService::class.java)
     }
 }
 
@@ -33,6 +38,14 @@ fun getOkHttpClient(context: Context): OkHttpClient {
         .cache(myCache)
         .addInterceptor { chain ->
             var request = chain.request()
-            request = if ()
+            request = if (isNetworkAvailable(context)!!)
+                request.newBuilder().header("Cache-Control","public, max-age=" + 5).build()
+            else
+                request.newBuilder().header(
+                    "Cache-Control",
+                    "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7
+                ).build()
+            chain.proceed(request)
         }
+        .build()
 }
