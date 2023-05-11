@@ -1,4 +1,4 @@
-package com.example.covid19project
+package com.example.covid19project.ui
 
 import android.os.Bundle
 import android.os.PersistableBundle
