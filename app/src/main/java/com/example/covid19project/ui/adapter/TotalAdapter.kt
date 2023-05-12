@@ -1,5 +1,6 @@
 package com.example.covid19project.ui.adapter
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -11,12 +12,18 @@ import com.example.covid19project.model.Details
 class TotalAdapter: ListAdapter<Details,TotalAdapter.TotalViewHolder>(DIFF_CALLBACK) {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TotalViewHolder {
-        I
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TotalViewHolder =
+        TotalViewHolder(
+            ItemTotalBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
+
 
     override fun onBindViewHolder(holder: TotalViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.bind(getItem(position))
     }
 
     class TotalViewHolder(private val binding: ItemTotalBinding):
