@@ -2,6 +2,7 @@ package com.example.covid19project.ui.detail
 
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -34,6 +35,9 @@ class StateDetailsActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
+
+        initViews()
+        initData()
     }
 
     private fun getStateDetails(): Details? = intent.getParcelableExtra(KEY_STATE_DETAILS)
@@ -58,7 +62,7 @@ class StateDetailsActivity: AppCompatActivity() {
         }
 
         viewBinding.swipeRefreshLayout.setOnRefreshListener {
-
+            loadData(getStateDetails())
         }
     }
 
@@ -76,8 +80,22 @@ class StateDetailsActivity: AppCompatActivity() {
 
                     viewBinding.swipeRefreshLayout.isRefreshing = false
                 }
+                is State.Error -> {
+                    viewBinding.swipeRefreshLayout.isRefreshing = false
+                    Toast.makeText(applicationContext, state.message, Toast.LENGTH_LONG).show()
+                }
             }
         })
+
+        if (viewModel.stateCovidLiveDataDetails.value !is State.Success){
+            loadData(getStateDetails())
+        }
+    }
+
+    private fun loadData(details: Details?){
+        details?.state?.let {
+            viewModel.getDistrictData(it)
+        }
     }
 
     companion object {
