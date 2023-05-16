@@ -1,5 +1,6 @@
 package com.example.covid19project.ui.detail.adapter
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -8,15 +9,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.covid19project.databinding.ItemDistrictBinding
 import com.example.covid19project.model.DistrictData
 
-class DistrictsAdapter : ListAdapter<DistrictData,DistrictsAdapter.TotalViewHolder>() {
+class DistrictsAdapter
+    : ListAdapter<DistrictData, DistrictsAdapter.TotalViewHolder>(DIFF_CALLBACK) {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TotalViewHolder {
-        TODO("Not yet implemented")
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TotalViewHolder (
+        ItemDistrictBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+    )
+
+
 
     override fun onBindViewHolder(holder: TotalViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.bind(getItem(position))
     }
 
 
@@ -57,25 +65,23 @@ class DistrictsAdapter : ListAdapter<DistrictData,DistrictsAdapter.TotalViewHold
                 }
             }
 
-        companion object {
-            private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DistrictData>() {
-                override fun areItemsTheSame(
-                    oldItem: DistrictData,
-                    newItem: DistrictData
-                ): Boolean {
-                    TODO("Not yet implemented")
-                }
+    }
 
-                override fun areContentsTheSame(
-                    oldItem: DistrictData,
-                    newItem: DistrictData
-                ): Boolean {
-                    TODO("Not yet implemented")
-                }
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DistrictData>() {
+            override fun areItemsTheSame(
+                oldItem: DistrictData,
+                newItem: DistrictData
+            ): Boolean =
+                oldItem.district == newItem.district
 
-            }
+
+            override fun areContentsTheSame(
+                oldItem: DistrictData,
+                newItem: DistrictData
+            ): Boolean =
+                oldItem == newItem
         }
-
     }
 
 
