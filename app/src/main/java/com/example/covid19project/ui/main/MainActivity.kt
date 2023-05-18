@@ -138,15 +138,14 @@ class MainActivity : AppCompatActivity() {
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
-        val notificationWorkRequest =
-            PeriodicWorkRequestBuilder<NotificationWorker>(1, TimeUnit.HOURS)
-                .setConstraints(constraints)
-                .build()
+        val logBuilder = PeriodicWorkRequestBuilder<NotificationWorker>(
+            30, TimeUnit.MINUTES,
+            15, TimeUnit.MINUTES)
 
         WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
             JOB_TAG,
             ExistingPeriodicWorkPolicy.KEEP,
-            notificationWorkRequest
+            logBuilder
         )
     }
 
