@@ -1,24 +1,24 @@
 package com.example.covid19project.ui.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.ui.unit.Constraints
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.MergeAdapter
+import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.covid19project.R
 import com.example.covid19project.databinding.ActivityMainBinding
-import com.example.covid19project.databinding.ActivityStateDetailsBinding
 import com.example.covid19project.model.Details
 import com.example.covid19project.ui.adapter.TotalAdapter
 import com.example.covid19project.ui.detail.StateDetailsActivity
@@ -138,14 +138,15 @@ class MainActivity : AppCompatActivity() {
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
-        val logBuilder = PeriodicWorkRequestBuilder<NotificationWorker>(
-            30, TimeUnit.MINUTES,
-            15, TimeUnit.MINUTES)
+        val notificationWorkRequest =
+            PeriodicWorkRequestBuilder<NotificationWorker>(1, TimeUnit.HOURS)
+                .setConstraints(constraints)
+                .build()
 
         WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
             JOB_TAG,
             ExistingPeriodicWorkPolicy.KEEP,
-            logBuilder
+            notificationWorkRequest
         )
     }
 

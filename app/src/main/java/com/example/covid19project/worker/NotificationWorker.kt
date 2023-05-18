@@ -20,6 +20,9 @@ import com.example.covid19project.util.State
 import com.example.covid19project.util.getPeriod
 import com.example.covid19project.util.toDateFormat
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.withContext
@@ -33,6 +36,7 @@ class NotificationWorker(
 ) : CoroutineWorker(context, params), KoinComponent {
 
 
+    @OptIn(InternalCoroutinesApi::class, FlowPreview::class, ExperimentalCoroutinesApi::class)
     @SuppressLint("UnspecifiedImmutableFlag", "NotificationPermission")
     private fun showNotification(totalCount: String, time: String) {
         val intent = Intent(context, MainActivity::class.java)
