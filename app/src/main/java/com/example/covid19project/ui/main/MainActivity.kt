@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.MergeAdapter
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -42,7 +43,9 @@ import java.util.concurrent.TimeUnit
 @InternalCoroutinesApi
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel: MainViewModel by viewModels()
+    //private val viewModel: MainViewModel by viewModels()
+    private lateinit var viewModel: MainViewModel
+
 
     private val mTotalAdapter = TotalAdapter()
     private val mStateAdapter = ItemAdapter(this::navigateToStateDetailsActivity)
@@ -60,6 +63,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         initViews()
         initData()

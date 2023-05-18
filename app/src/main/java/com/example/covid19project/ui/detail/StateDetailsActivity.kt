@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.recyclerview.widget.MergeAdapter
 import com.example.covid19project.R
@@ -13,6 +14,7 @@ import com.example.covid19project.databinding.ActivityStateDetailsBinding
 import com.example.covid19project.model.Details
 import com.example.covid19project.ui.adapter.TotalAdapter
 import com.example.covid19project.ui.detail.adapter.DistrictsAdapter
+import com.example.covid19project.ui.main.MainViewModel
 import com.example.covid19project.util.State
 import com.example.covid19project.util.getPeriod
 import com.example.covid19project.util.toDateFormat
@@ -30,11 +32,13 @@ class StateDetailsActivity: AppCompatActivity() {
 
     private val mergeAdapter = MergeAdapter(mStateTotalAdapter,mDistrictAdapter)
 
-    private val viewModel: StateDetailsViewModel by viewModels()
+    //private val viewModel: StateDetailsViewModel by viewModels()
+    private lateinit var viewModel: StateDetailsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
+        viewModel = ViewModelProvider(this)[StateDetailsViewModel::class.java]
 
         initViews()
         initData()
