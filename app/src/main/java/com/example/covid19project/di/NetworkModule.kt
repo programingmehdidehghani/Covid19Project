@@ -2,6 +2,7 @@ package com.example.covid19project.di
 
 import android.content.Context
 import com.example.covid19project.api.Covid19IndiaApiService
+import com.example.covid19project.repository.CovidIndiaRepository
 import com.example.covid19project.util.isNetworkAvailable
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -27,6 +28,10 @@ val networkModule = module {
             .client(getOkHttpClient(androidContext()))
             .build()
             .create(Covid19IndiaApiService::class.java)
+    }
+
+    single {
+        CovidIndiaRepository(get())
     }
 }
 
